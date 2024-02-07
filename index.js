@@ -27,7 +27,7 @@ app.post('/incoming-call', (req, res) => {
     const twiml = new VoiceResponse();
 
     console.log({ req });
-    twiml.dial({ callerId: '+14344338771' }, '+919359102032'); // Replace with the destination phone number
+    twiml.dial({ callerId: '+14344338771' }, '+919359192032'); // Replace with the destination phone number
 
     res.type('text/xml');
     res.send(twiml.toString());
