@@ -23,7 +23,7 @@ app.get('/availablePhoneNumbers', (req, res) => {
         .then(hosted_number_order => { console.log(hosted_number_order); res.send(hosted_number_order) });
 })
 
-app.post('/incoming-call', (req, res) => {
+app.get('/incoming-call', (req, res) => {
     const twiml = new VoiceResponse();
     console.log("-------------------------")
     console.log({ from: req.body });
