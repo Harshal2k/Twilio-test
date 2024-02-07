@@ -46,7 +46,7 @@ app.get('/incoming-call', (req, res) => {
 
 app.post('/getherInput', (req, res) => {
     const twiml = new VoiceResponse();
-
+    twiml.dial({ callerId: '+19134236245' }, '+919359192032');
     /** helper function to set up a <Gather> */
     function gather() {
         const gatherNode = twiml.gather({ numDigits: 1 });
