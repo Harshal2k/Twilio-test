@@ -20,18 +20,18 @@ app.get('/call', (req, res) => {
 
 app.get('/availablePhoneNumbers', (req, res) => {
     client.incomingPhoneNumbers.list({ status: 'active' })
-    .then(hosted_number_order => {console.log(hosted_number_order);res.send(hosted_number_order)});
+        .then(hosted_number_order => { console.log(hosted_number_order); res.send(hosted_number_order) });
 })
 
 app.post('/incoming-call', (req, res) => {
     const twiml = new VoiceResponse();
-  
 
+    console.log({ req });
     twiml.dial({ callerId: '+14344338771' }, '+16692658445'); // Replace with the destination phone number
 
     res.type('text/xml');
     res.send(twiml.toString());
-  });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
