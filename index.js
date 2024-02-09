@@ -111,7 +111,11 @@ app.post('/status', (req, res) => {
     console.log("Status changed");
     console.log({ body: req.body })
     const twiml = new VoiceResponse();
-    twiml.say('Status Changed');
+    const gather = twiml.gather({
+      numDigits: 1,
+      action: '/gather',
+    });
+    gather.say('Please enter a digit.');
     res.type('text/xml');
     res.send(twiml.toString());
 })
