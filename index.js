@@ -101,7 +101,10 @@ app.post('/gather', (req, res) => {
     console.log('Caller entered during call:', digitPressed);
 
     const twiml = new VoiceResponse();
-    twiml.say('Thank you for your input.');
+    const gather = twiml.gather({
+        numDigits: 1,
+        action: '/gather',
+      });
 
     res.type('text/xml');
     res.send(twiml.toString());
