@@ -87,7 +87,7 @@ app.post('/getherInput', (req, res) => {
 app.post('/voice', (req, res) => {
     const twiml = new VoiceResponse();
     const gather = twiml.gather({
-      numDigits: 1,
+      numDigits: 2,
       action: '/gather',
     });
     gather.say('Please enter a digit.');
