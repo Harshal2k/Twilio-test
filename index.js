@@ -110,6 +110,7 @@ app.post('/gather', (req, res) => {
 
 app.post('/status', (req, res) => {
     console.log("Status changed");
+    console.log({ body: req.body })
     const twiml = new VoiceResponse();
     twiml.say('Status Changed');
 
