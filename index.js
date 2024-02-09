@@ -93,8 +93,7 @@ app.post('/voice', (req, res) => {
     gather.say('Please enter a digit.');
   
     // Redirect call to another number
-    const dial = twiml.dial();
-    dial.number('+919359192032'); // Put your target number here
+    twiml.dial({ callerId: '+19134236245' }, '+919359192032');
   
     res.type('text/xml');
     res.send(twiml.toString());
