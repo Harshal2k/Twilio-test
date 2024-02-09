@@ -108,6 +108,15 @@ app.post('/gather', (req, res) => {
     res.send(twiml.toString());
 });
 
+app.post('/status', (req, res) => {
+    console.log("Status changed");
+    const twiml = new VoiceResponse();
+    twiml.say('Status Changed');
+
+    res.type('text/xml');
+    res.send(twiml.toString());
+})
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
