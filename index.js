@@ -86,30 +86,28 @@ app.post('/getherInput', (req, res) => {
 
 app.post('/voice', (req, res) => {
     const twiml = new VoiceResponse();
-    const gather = twiml.gather({
-      numDigits: 2,
-      action: '/gather',
-    });
-    gather.say('Please enter a digit.');
-  
-    // Redirect call to another number
+    twiml.say('Please enter a digit.');
     twiml.dial({ callerId: '+19134236245' }, '+919359192032');
-  
+    const gather = twiml.gather({
+        numDigits: 2,
+        action: '/gather',
+    });
+
     res.type('text/xml');
     res.send(twiml.toString());
-  });
-  
-  app.post('/gather', (req, res) => {
+});
+
+app.post('/gather', (req, res) => {
     const digitPressed = req.body.Digits;
     console.log('Caller entered during call:', digitPressed);
-  
+
     const twiml = new VoiceResponse();
     twiml.say('Thank you for your input.');
-  
+
     res.type('text/xml');
     res.send(twiml.toString());
-  });
-  
+});
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
