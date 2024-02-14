@@ -88,9 +88,12 @@ app.post('/voice', (req, res) => {
     const response = new VoiceResponse();
     const dial = response.dial({ callerId: '+19134236245' });
     dial.number({
-        url: '/status'
     }, '+919359192032');
-    
+    const gather = response.gather({
+        numDigits: 1,
+        action: '/gather',
+      });
+      gather.say('Please enter a digit.');
 
     res.type('text/xml');
     res.send(response.toString());
