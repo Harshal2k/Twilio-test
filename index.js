@@ -101,6 +101,8 @@ app.post('/voice', (req, res) => {
 });
 
 app.post('/gather', (req, res) => {
+    console.log("--------------------------------")
+    console.log(req.body)
     const digitPressed = req.body.Digits;
     console.log('Caller entered during call:', digitPressed);
 
