@@ -92,9 +92,9 @@ app.post('/voice', (req, res) => {
     const gather = response.gather({
         numDigits: 1,
         action: '/gather',
-      });
-      gather.say('Please enter a digit.');
-
+    });
+    gather.say('Please enter a digit.');
+    console.log(response.toString())
     res.type('text/xml');
     res.send(response.toString());
 });
@@ -107,7 +107,7 @@ app.post('/gather', (req, res) => {
     const gather = twiml.gather({
         numDigits: 1,
         action: '/gather',
-      });
+    });
 
     res.type('text/xml');
     res.send(twiml.toString());
@@ -118,8 +118,8 @@ app.post('/status', (req, res) => {
     console.log({ body: req.body })
     const twiml = new VoiceResponse();
     const gather = twiml.gather({
-      numDigits: 1,
-      action: '/gather',
+        numDigits: 1,
+        action: '/gather',
     });
     gather.say('Please enter a digit.');
     res.type('text/xml');
