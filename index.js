@@ -92,6 +92,7 @@ app.post('/voice', (req, res) => {
     const gather = response.gather({
         numDigits: 1,
         action: '/gather',
+        actionOnEmptyResult:true
     });
     gather.say('Please enter a digit.');
     console.log(response.toString())
