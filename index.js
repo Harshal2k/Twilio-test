@@ -86,13 +86,15 @@ app.post('/getherInput', (req, res) => {
 
 app.post('/voice', (req, res) => {
     const response = new VoiceResponse();
-    const dial = response.dial({ callerId: '+19134236245',action: '/gather', method: 'POST',sequential:true  });
+    const dial = response.dial({ callerId: '+19134236245', action: '/status', method: 'POST', sequential: true });
     dial.number({
+        sendDigits: 'Enter any number',
+        url: '/gather'
     }, '+919359192032');
     const gather = response.gather({
         numDigits: 1,
         action: '/gather',
-        actionOnEmptyResult:true
+        actionOnEmptyResult: true
     });
     gather.say('Please enter a digit.');
     console.log(response.toString())
@@ -123,6 +125,8 @@ app.post('/status', (req, res) => {
     const gather = twiml.gather({
         numDigits: 1,
         action: '/gather',
+        timeout: 50,
+
     });
     gather.say('Please enter a digit.');
     res.type('text/xml');
