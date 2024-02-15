@@ -133,6 +133,37 @@ app.post('/status', (req, res) => {
     res.send(twiml.toString());
 })
 
+app.post('/voice2', (req, res) => {
+    const response = new VoiceResponse();
+  
+    // Forward the call to another number
+    const dial = response.dial();
+    dial.number('+919359192032'); // Replace with the number you want to forward to
+  
+    // Capture keypad input
+    const gather = response.gather({
+      action: '/gather',
+      method: 'POST',
+      numDigits: 1,
+    });
+    gather.say('Please press any key.');
+    console.log(response.toString())
+    res.set('Content-Type', 'text/xml');
+    res.send(response.toString());
+  });
+  
+  // Endpoint to handle DTMF tones
+  app.post('/gather2', (req, res) => {
+    const digitPressed = req.body.Digits;
+    console.log(`Digit pressed: ${digitPressed}`);
+  
+    // You can process the digit pressed here
+    // For real-time notification, you can send the digit to your server or perform actions based on the digit immediately
+  
+    res.set('Content-Type', 'text/xml');
+    res.send('<Response></Response>'); // Respond with empty TwiML to end the gather
+  });
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
