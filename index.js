@@ -86,7 +86,7 @@ app.post('/getherInput', (req, res) => {
 
 app.post('/voice', (req, res) => {
     const response = new VoiceResponse();
-    const dial = response.dial({ callerId: '+19134236245' });
+    const dial = response.dial({ callerId: '+19134236245',action: '/gather', method: 'POST'  });
     dial.number({
     }, '+919359192032');
     const gather = response.gather({
