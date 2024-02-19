@@ -200,7 +200,7 @@ app.post('/mapUsers', async (req, res) => {
 app.post('/callForwarding', async (req, res) => {
     try {
         console.log(req.body)
-        let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.to}';`);
+        let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.To}';`);
 
         if (mapDetails[0]?.length == 0 || (!mapDetails[0][0].caller && mapDetails[0][0].host == req?.body?.from)) {
             res.set('Content-Type', 'text/xml');
