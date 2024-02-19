@@ -202,18 +202,18 @@ app.post('/callForwarding', async (req, res) => {
         console.log(req.body)
         let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.To}';`);
 
-        if (mapDetails[0]?.length == 0 || (!mapDetails[0][0].caller && mapDetails[0][0].host == req?.body?.from)) {
+        if (mapDetails[0]?.length == 0 || (!mapDetails[0][0].caller && mapDetails[0][0].host == req?.body?.From)) {
             res.set('Content-Type', 'text/xml');
             res.send(`<Response>
             <Say>Phone number not mapped</Say>
           </Response>`);
-        } else if (mapDetails[0][0].host == req?.body?.from) {
-            await sequelize.query(`update phone_mapping set caller = '${req.body.from}' where twilio_number = '${mapDetails[0][0].twilio_number}'`)
+        } else if (mapDetails[0][0].host == req?.body?.From) {
+            await sequelize.query(`update phone_mapping set caller = '${req.body.From}' where twilio_number = '${mapDetails[0][0].twilio_number}'`)
         }
         const response = new VoiceResponse();
         const dial = response.dial({ callerId: '+19134236245' });
         dial.number({
-        }, req?.body?.from == mapDetails[0][0].host ? mapDetails[0][0].caller : mapDetails[0][0].host);
+        }, req?.body?.From == mapDetails[0][0].host ? mapDetails[0][0].caller : mapDetails[0][0].host);
         res.type('text/xml');
         res.send(response.toString());
     } catch (err) {
