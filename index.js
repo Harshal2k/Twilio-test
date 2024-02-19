@@ -2,9 +2,30 @@ const express = require('express')
 const dotenv = require('dotenv');
 dotenv.config();
 const urlencoded = require('body-parser').urlencoded;
+const { Sequelize } = require('sequelize');
 const app = express()
 app.use(urlencoded({ extended: false }));
+app.use(express.json());
 const port = process.env.PORT;
+
+const sequelize = new Sequelize('postgres://twilio_mapping_user:nOUhllfVvG2HA5AhR1WyBdBtzRLZ4ih0@dpg-cn9h45ol6cac73a0ukqg-a.oregon-postgres.render.com/twilio_mapping', {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+        ssl: true,
+    native:true
+    },
+})
+const connectDb = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
+
+connectDb();
 
 const accountSid = process.env.ACCOUNT_SID;
 const authToken = process.env.AUTH_TOKEN;
@@ -135,34 +156,69 @@ app.post('/status', (req, res) => {
 
 app.post('/voice2', (req, res) => {
     const response = new VoiceResponse();
-  
+
     // Forward the call to another number
-    const dial = response.dial({callerId: '+19134236245'});
+    const dial = response.dial({ callerId: '+19134236245' });
     dial.number('+919359192032'); // Replace with the number you want to forward to
-  
+
     // Capture keypad input
     const gather = response.gather({
-      action: '/gather',
-      method: 'POST',
-      numDigits: 1,
+        action: '/gather',
+        method: 'POST',
+        numDigits: 1,
     });
     gather.say('Please press any key.');
     console.log(response.toString())
     res.set('Content-Type', 'text/xml');
     res.send(response.toString());
-  });
-  
-  // Endpoint to handle DTMF tones
-  app.post('/gather2', (req, res) => {
+});
+
+// Endpoint to handle DTMF tones
+app.post('/gather2', (req, res) => {
     const digitPressed = req.body.Digits;
     console.log(`Digit pressed: ${digitPressed}`);
-  
+
     // You can process the digit pressed here
     // For real-time notification, you can send the digit to your server or perform actions based on the digit immediately
-  
+
     res.set('Content-Type', 'text/xml');
     res.send('<Response></Response>'); // Respond with empty TwiML to end the gather
-  });
+});
+
+app.post('/mapUsers', async (req, res) => {
+    try {
+        await sequelize.query(`insert into phone_mapping (host,twilio_number) values ('${req?.body.phone}','+19134236245');`);
+        let all_mapping = await sequelize.query('select * from phone_mapping', { raw: true });
+        res.send({ twilioPhone: `+19134236245` })
+    } catch (err) {
+        console.log({ err })
+        res.status(500)
+        res.send({ error: 'something went wrong' })
+    }
+});
+
+app.post('/callForwarding', async (req, res) => {
+    try {
+        let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.to}';`);
+
+        if (mapDetails[0]?.length == 0 || (!mapDetails[0][0].caller && mapDetails[0][0].host == req?.body?.from)) {
+            res.set('Content-Type', 'text/xml');
+            res.send(`<Response>
+            <Say>Phone number not mapped</Say>
+          </Response>`);
+        } else if (mapDetails[0][0].host == req?.body?.from) {
+            await sequelize.query(`update phone_mapping set caller = '${req.body.from}' where twilio_number = '${mapDetails[0][0].twilio_number}'`)
+        }
+        const response = new VoiceResponse();
+        const dial = response.dial({ callerId: '+19134236245' });
+        dial.number({
+        }, req?.body?.from == mapDetails[0][0].host ? mapDetails[0][0].caller : mapDetails[0][0].host);
+        res.type('text/xml');
+        res.send(response.toString());
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 
 app.listen(port, () => {
