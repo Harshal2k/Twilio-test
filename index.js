@@ -111,15 +111,7 @@ app.post('/voice', (req, res) => {
     const response = new VoiceResponse();
     const dial = response.dial({ callerId: '+19134236245', sequential: true });
     dial.number({
-        sendDigits: 'Enter any number',
-        url: '/gather'
     }, '+919359192032');
-    const gather = response.gather({
-        numDigits: 1,
-        action: '/gather',
-        actionOnEmptyResult: true
-    });
-    gather.say('Please enter a digit.');
     console.log(response.toString())
     res.type('text/xml');
     res.send(response.toString());
@@ -131,20 +123,21 @@ app.post('/gather', (req, res) => {
     const digitPressed = req.body.Digits;
     console.log('Caller entered during call:', digitPressed);
 
-    const twiml = new VoiceResponse();
-    const gather = twiml.gather({
-        numDigits: 1,
-        action: '/gather',
-    });
+    // const twiml = new VoiceResponse();
+    // const gather = twiml.gather({
+    //     numDigits: 1,
+    //     action: '/gather',
+    // });
 
-    res.type('text/xml');
-    res.send(twiml.toString());
+    //res.type('text/xml');
+    res.send("success");
 });
 
 app.post('/status', (req, res) => {
     console.log("Status changed");
     console.log({ body: req.body })
     const twiml = new VoiceResponse();
+    twiml.dial({ callerId: '+19134236245' }, '+919359192032');
     const gather = twiml.gather({
         numDigits: 1,
         action: '/gather',
@@ -168,6 +161,7 @@ app.post('/voice2', (req, res) => {
         action: '/gather',
         method: 'POST',
         numDigits: 1,
+        timeout:50
     });
     gather.say('Please press any key.');
     console.log(response.toString())
