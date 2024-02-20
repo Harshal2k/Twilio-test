@@ -1,11 +1,13 @@
 const express = require('express')
 const dotenv = require('dotenv');
+const cors = require('cors');
 dotenv.config();
 const urlencoded = require('body-parser').urlencoded;
 const { Sequelize } = require('sequelize');
 const app = express()
 app.use(urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors());
 const port = process.env.PORT;
 
 const sequelize = new Sequelize('postgres://twilio_mapping_user:nOUhllfVvG2HA5AhR1WyBdBtzRLZ4ih0@dpg-cn9h45ol6cac73a0ukqg-a.oregon-postgres.render.com/twilio_mapping', {
