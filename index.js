@@ -13,7 +13,7 @@ const sequelize = new Sequelize('postgres://twilio_mapping_user:nOUhllfVvG2HA5Ah
     protocol: 'postgres',
     dialectOptions: {
         ssl: true,
-    native:true
+        native: true
     },
 })
 const connectDb = async () => {
@@ -187,8 +187,8 @@ app.post('/gather2', (req, res) => {
 
 app.post('/mapUsers', async (req, res) => {
     try {
+        await sequelize.query(`delete from phone_mapping where twilio_number='+19134236245'`);
         await sequelize.query(`insert into phone_mapping (host,twilio_number) values ('${req?.body.phone}','+19134236245');`);
-        let all_mapping = await sequelize.query('select * from phone_mapping', { raw: true });
         res.send({ twilioPhone: `+19134236245` })
     } catch (err) {
         console.log({ err })
@@ -201,19 +201,20 @@ app.post('/callForwarding', async (req, res) => {
     try {
         console.log(req.body)
         let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.To}';`);
-
-        if (mapDetails[0]?.length == 0 || (!mapDetails[0][0].caller && mapDetails[0][0].host == req?.body?.From)) {
+        console.log({ mapDetails: mapDetails[0] });
+        if (mapDetails[0]?.length == 0 || (mapDetails[0][0]?.caller ? !(mapDetails[0][0]?.caller == req?.body?.From || mapDetails[0][0]?.host == req?.body?.From) : mapDetails[0][0]?.host == req?.body?.From)) {
             res.set('Content-Type', 'text/xml');
             res.send(`<Response>
             <Say>Phone number not mapped</Say>
           </Response>`);
-        } else if (mapDetails[0][0].host == req?.body?.From) {
+            return;
+        } else if (mapDetails[0][0]?.caller == null) {
             await sequelize.query(`update phone_mapping set caller = '${req.body.From}' where twilio_number = '${mapDetails[0][0].twilio_number}'`)
         }
         const response = new VoiceResponse();
         const dial = response.dial({ callerId: '+19134236245' });
         dial.number({
-        }, req?.body?.From == mapDetails[0][0].host ? mapDetails[0][0].caller : mapDetails[0][0].host);
+        }, req?.body?.From == mapDetails[0][0]?.host ? mapDetails[0][0]?.caller : mapDetails[0][0]?.host);
         res.type('text/xml');
         res.send(response.toString());
     } catch (err) {
