@@ -189,6 +189,11 @@ app.post('/gather2', (req, res) => {
 
 app.post('/mapUsers', async (req, res) => {
     try {
+        if (!req?.body?.phone) {
+            res.status(400)
+            res.send({ error: 'Phone is required' });
+            return;
+        }
         await sequelize.query(`delete from phone_mapping where twilio_number='+19134236245'`);
         await sequelize.query(`insert into phone_mapping (host,twilio_number) values ('${req?.body.phone}','+19134236245');`);
         res.send({ twilioPhone: `+19134236245` })
