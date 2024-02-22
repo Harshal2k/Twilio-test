@@ -161,7 +161,7 @@ app.post('/voice2', (req, res) => {
         action: '/gather',
         method: 'POST',
         numDigits: 1,
-        timeout:50
+        timeout: 50
     });
     gather.say('Please press any key.');
     console.log(response.toString())
@@ -203,7 +203,7 @@ app.post('/callForwarding', async (req, res) => {
         console.log(req.body)
         let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.To}';`);
         console.log({ mapDetails: mapDetails[0] });
-        if (mapDetails[0]?.length == 0 || (mapDetails[0][0]?.caller ? !(mapDetails[0][0]?.caller == req?.body?.From || mapDetails[0][0]?.host == req?.body?.From) : mapDetails[0][0]?.host == req?.body?.From)) {
+        if (mapDetails?.length == 0 || mapDetails[0]?.length == 0 || (mapDetails[0][0]?.caller ? !(mapDetails[0][0]?.caller == req?.body?.From || mapDetails[0][0]?.host == req?.body?.From) : mapDetails[0][0]?.host == req?.body?.From)) {
             res.set('Content-Type', 'text/xml');
             res.send(`<Response>
             <Say>Phone number not mapped</Say>
