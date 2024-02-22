@@ -188,9 +188,9 @@ app.post('/mapUsers', async (req, res) => {
             res.send({ error: 'Phone is required' });
             return;
         }
-        await sequelize.query(`delete from phone_mapping where twilio_number='+19134236245'`);
-        await sequelize.query(`insert into phone_mapping (host,twilio_number) values ('${req?.body.phone}','+19134236245');`);
-        res.send({ twilioPhone: `+19134236245` })
+        await sequelize.query(`delete from phone_mapping where twilio_number='+14344338771'`);
+        await sequelize.query(`insert into phone_mapping (host,twilio_number) values ('${req?.body.phone}','+14344338771');`);
+        res.send({ twilioPhone: `+14344338771` })
     } catch (err) {
         console.log({ err })
         res.status(500)
@@ -213,7 +213,7 @@ app.post('/callForwarding', async (req, res) => {
             await sequelize.query(`update phone_mapping set caller = '${req.body.From}' where twilio_number = '${mapDetails[0][0].twilio_number}'`)
         }
         const response = new VoiceResponse();
-        const dial = response.dial({ callerId: '+19134236245' });
+        const dial = response.dial({ callerId: '+14344338771' });
         dial.number({
         }, req?.body?.From == mapDetails[0][0]?.host ? mapDetails[0][0]?.caller : mapDetails[0][0]?.host);
         res.type('text/xml');
