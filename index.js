@@ -60,11 +60,8 @@ app.get(`${serviceName}/availablePhoneNumbers`, async (req, res) => {
 
 app.get(`${serviceName}/incoming-call`, (req, res) => {
     const twiml = new VoiceResponse();
-    console.log("-------------------------")
-    console.log({ from: req.body });
-    console.log({ query: req.query });
     twiml.dial({ callerId: '+19134236245' }, '+919359192032');
-
+    console.log(twiml.toString())
     res.type('text/xml');
     res.send(twiml.toString());
 });
