@@ -221,6 +221,10 @@ app.post('/callForwarding', async (req, res) => {
     } catch (err) {
         console.log(err)
     }
+});
+
+app.get("/health", (req, res) => {
+    res.send("I am ok bro 🥹")
 })
 
 
