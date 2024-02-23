@@ -242,8 +242,6 @@ app.post(`${serviceName}/conference`, async (req, res) => {
         const dial = response.dial();
         dial.conference('Room 1234');
         console.log({ dial })
-        res.type('text/xml');
-        res.send(response.toString());
 
 
         console.log(response.toString())
