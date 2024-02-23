@@ -241,7 +241,7 @@ app.post(`${serviceName}/conference`, async (req, res) => {
         const response = new VoiceResponse();
         const dial = response.dial();
         const conference=dial.conference('Room 1234');
-        console.log({ conference })
+        console.log(conference)
 
 
         console.log(response.toString())
