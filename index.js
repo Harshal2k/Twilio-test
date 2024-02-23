@@ -227,33 +227,36 @@ app.post(`${serviceName}/callForwarding`, async (req, res) => {
 
 async function addUserToConference(conferenceSid, phoneNumber) {
     try {
-      return await client.conferences(conferenceSid)
-        .participants.create({
-          from: '+19134236245', // Replace with your Twilio phone number
-          to: phoneNumber,
-        });
+        return await client.conferences(conferenceSid)
+            .participants.create({
+                from: '+19134236245', // Replace with your Twilio phone number
+                to: phoneNumber,
+            });
     } catch (error) {
-      console.error('Error adding user to conference:', error);
-      return null;
+        console.error('Error adding user to conference:', error);
+        return null;
     }
-  }
-  
+}
+
 
 app.post(`${serviceName}/conference`, async (req, res) => {
     try {
-        const conference = await client.conferences.create();
+        const conference = await client.rooms.create({
+            type: 'go', // Use the 'go' type for conference calls
+            // Add other room options as needed
+        });
         await addUserToConference(conference.sid, "+919359192032");
         await addUserToConference(conference.sid, "+918550903953"); // Extract User B's number
-  
+
         // Update TwiML to dial the new conference
         const response = new twilio.twiml.VoiceResponse();
         response.dial().conference({ sid: conference.sid });
-  
+
         // Store the conference ID for User A (if using database)
-  
+
         res.type('text/xml');
         res.send(response.toString());
-        
+
 
         console.log(response.toString())
         res.type('text/xml');
