@@ -37,7 +37,7 @@ const { VoiceResponse } = twilio.twiml;
 
 const connectedNumbers = new Set();
 
-const serviceName = "/call_management"
+const serviceName = "/callManagement"
 
 app.get(`${serviceName}/call`, (req, res) => {
     client.calls.create({
