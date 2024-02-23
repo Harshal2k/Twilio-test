@@ -37,7 +37,9 @@ const { VoiceResponse } = twilio.twiml;
 
 const connectedNumbers = new Set();
 
-app.get('/call', (req, res) => {
+const serviceName = "/callMasking"
+
+app.get(`${serviceName}/call`, (req, res) => {
     client.calls.create({
         to: "+919359192032",
         from: "+19134236245",
@@ -46,7 +48,7 @@ app.get('/call', (req, res) => {
         .then(call => res.send(call));
 })
 
-app.get('/availablePhoneNumbers', async (req, res) => {
+app.get(`${serviceName}/availablePhoneNumbers`, async (req, res) => {
     let numbers = await client.incomingPhoneNumbers.list({ status: 'active' });
     console.log({ numbers });
     res.send(numbers);
@@ -56,7 +58,7 @@ app.get('/availablePhoneNumbers', async (req, res) => {
     //     .catch((err) => res.send(err))
 })
 
-app.get('/incoming-call', (req, res) => {
+app.get(`${serviceName}/incoming-call`, (req, res) => {
     const twiml = new VoiceResponse();
     console.log("-------------------------")
     console.log({ from: req.body });
@@ -67,7 +69,7 @@ app.get('/incoming-call', (req, res) => {
     res.send(twiml.toString());
 });
 
-app.post('/getherInput', (req, res) => {
+app.post(`${serviceName}/getherInput`, (req, res) => {
     const twiml = new VoiceResponse();
     twiml.dial({ callerId: '+19134236245' }, '+919359192032');
     /** helper function to set up a <Gather> */
@@ -107,7 +109,7 @@ app.post('/getherInput', (req, res) => {
     res.send(twiml.toString());
 });
 
-app.post('/voice', (req, res) => {
+app.post(`${serviceName}/voice`, (req, res) => {
     const response = new VoiceResponse();
     const dial = response.dial({ callerId: '+19134236245', sequential: true });
     dial.number({
@@ -117,7 +119,7 @@ app.post('/voice', (req, res) => {
     res.send(response.toString());
 });
 
-app.post('/gather', (req, res) => {
+app.post(`${serviceName}/gather`, (req, res) => {
     console.log("--------------------------------")
     console.log(req.body)
     const digitPressed = req.body.Digits;
@@ -133,7 +135,7 @@ app.post('/gather', (req, res) => {
     res.send("success");
 });
 
-app.post('/status', (req, res) => {
+app.post(`${serviceName}/status`, (req, res) => {
     console.log("Status changed");
     console.log({ body: req.body })
     const twiml = new VoiceResponse();
@@ -149,7 +151,7 @@ app.post('/status', (req, res) => {
     res.send(twiml.toString());
 })
 
-app.post('/voice2', (req, res) => {
+app.post(`${serviceName}/voice2`, (req, res) => {
     const response = new VoiceResponse();
 
     // Forward the call to another number
@@ -170,7 +172,7 @@ app.post('/voice2', (req, res) => {
 });
 
 // Endpoint to handle DTMF tones
-app.post('/gather2', (req, res) => {
+app.post(`${serviceName}/gather2`, (req, res) => {
     const digitPressed = req.body.Digits;
     console.log(`Digit pressed: ${digitPressed}`);
 
@@ -181,7 +183,7 @@ app.post('/gather2', (req, res) => {
     res.send('<Response></Response>'); // Respond with empty TwiML to end the gather
 });
 
-app.post('/mapUsers', async (req, res) => {
+app.post(`${serviceName}/mapUsers`, async (req, res) => {
     try {
         if (!req?.body?.phone) {
             res.status(400)
@@ -198,7 +200,7 @@ app.post('/mapUsers', async (req, res) => {
     }
 });
 
-app.post('/callForwarding', async (req, res) => {
+app.post(`${serviceName}/callForwarding`, async (req, res) => {
     try {
         console.log(req.body)
         let mapDetails = await sequelize.query(`select * from phone_mapping where twilio_number='${req.body.To}';`);
@@ -223,7 +225,7 @@ app.post('/callForwarding', async (req, res) => {
     }
 });
 
-app.get("/health", (req, res) => {
+app.get(`${serviceName}/health`, (req, res) => {
     res.send("I am ok bro 🥹")
 })
 
