@@ -225,6 +225,21 @@ app.post(`${serviceName}/callForwarding`, async (req, res) => {
     }
 });
 
+app.post(`${serviceName}/conference`, async (req, res) => {
+    try {
+        const response = new VoiceResponse();
+        const dial = response.dial();
+        dial.conference('Room 1234');
+        console.log(response.toString())
+        res.type('text/xml');
+        res.send(response.toString());
+    } catch (err) {
+        console.log({ err })
+        res.status(500)
+        res.send({ error: 'something went wrong' })
+    }
+});
+
 app.get(`${serviceName}/health`, (req, res) => {
     res.send("I am ok bro 🥹")
 })
