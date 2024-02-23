@@ -238,19 +238,10 @@ async function addUserToConference(conferenceSid, phoneNumber) {
 
 app.post(`${serviceName}/conference`, async (req, res) => {
     try {
-        const conference = await client.rooms.create({
-            type: 'go', // Use the 'go' type for conference calls
-            // Add other room options as needed
-        });
-        await addUserToConference(conference.sid, "+919359192032");
-        await addUserToConference(conference.sid, "+918550903953"); // Extract User B's number
-
-        // Update TwiML to dial the new conference
-        const response = new twilio.twiml.VoiceResponse();
-        response.dial().conference({ sid: conference.sid });
-
-        // Store the conference ID for User A (if using database)
-
+        const response = new VoiceResponse();
+        const dial = response.dial();
+        dial.conference('Room 1234');
+        console.log({ dial })
         res.type('text/xml');
         res.send(response.toString());
 
