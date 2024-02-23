@@ -229,7 +229,7 @@ app.get(`${serviceName}/health`, (req, res) => {
     res.send("I am ok bro 🥹")
 })
 
-
+console.log(`PORT : ${port}`)
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
