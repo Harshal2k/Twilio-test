@@ -229,7 +229,7 @@ app.post(`${serviceName}/conference`, async (req, res) => {
     try {
         const response = new VoiceResponse();
         const dial = response.dial();
-        dial.conference('Room 1234');
+        let conference = dial.conference('Room 1234');
         conference.dial().client("+919359192032")
         console.log(response.toString())
         res.type('text/xml');
