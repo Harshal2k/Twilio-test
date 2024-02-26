@@ -239,11 +239,21 @@ async function addUserToConference(conferenceSid, phoneNumber) {
 app.post(`${serviceName}/conference`, async (req, res) => {
     try {
         const response = new VoiceResponse();
-        const dial = response.dial();
-        const conference=dial.conference('Room 1234');
-        console.log(conference)
+        const dial = response.dial({ hangupOnStar: true });
+        const conference = dial.conference('Room 1234');
+        console.log(conference.response)
 
-
+        client.calls.create({
+            twiml: '<Response><Dial hangupOnStar="true"><Conference>Room 1234</Conference></Dial><Gather action="/callManagement/gather" method="POST" numDigits="1" timeout="50"/></Response>',
+            to: '+919359192032',
+            from: '+19134236245'
+        })
+        const gather = response.gather({
+            action: `${serviceName}/gather`,
+            method: 'POST',
+            numDigits: 1,
+            timeout: 50
+        });
         console.log(response.toString())
         res.type('text/xml');
         res.send(response.toString());
@@ -251,6 +261,27 @@ app.post(`${serviceName}/conference`, async (req, res) => {
         console.log({ err })
         res.status(500)
         res.send({ error: 'something went wrong' })
+    }
+});
+
+app.post(`${serviceName}/gatherInput`, (req, res) => {
+    try {
+
+    } catch (err) {
+
+    }
+});
+
+app.post(`${serviceName}/addToConference`, (req, res) => {
+    try {
+        const response = new VoiceResponse();
+        const dial = response.dial();
+        dial.conference('Room 1234');
+        console.log(response.toString())
+        res.type('text/xml');
+        res.send(response.toString());
+    } catch (err) {
+
     }
 });
 
