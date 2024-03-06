@@ -1,0 +1,203 @@
+{
+  "local": {
+    "database":"call_management_dev1",
+    "username":"call_management_dev1_role",
+    "password":"Y2EyYWVmYzk2MjYy",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port":5435,
+    "timezone": "+05:30"
+  },
+  "development": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": false,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "statement_timeout": 15000,
+      "idle_in_transaction_session_timeout": 5000
+    },
+    "timezone": "+05:30",
+    "pool": {
+      "max": 25,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production2": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "statement_timeout": 15000,
+      "idle_in_transaction_session_timeout": 5000
+    },
+    "timezone": "+05:30",
+    "pool": {
+      "max": 15,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production3": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "statement_timeout": 15000,
+      "idle_in_transaction_session_timeout": 5000
+    },
+    "timezone": "+05:30",
+    "pool": {
+      "max": 25,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production4": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "statement_timeout": 15000,
+      "idle_in_transaction_session_timeout": 5000
+    },
+    "timezone": "+05:30",
+    "pool": {
+      "max": 25,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "usProd": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": false,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "statement_timeout": 15000,
+      "idle_in_transaction_session_timeout": 5000
+    },
+    "timezone": "+05:30",
+    "pool": {
+      "max": 15,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "productionDummy": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "statement_timeout": 15000,
+      "idle_in_transaction_session_timeout": 5000
+    },
+    "timezone": "+05:30",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "test": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 30,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "stage1": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 20,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "development2": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 2,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "htuat": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "hmuat": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 20,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "hmft": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 20,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "test1": {
+    "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
+    "logging": true,
+    "dialect": "postgres",
+    "timezone": "+05:30",
+    "pool": {
+      "max": 20,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  }
+}
