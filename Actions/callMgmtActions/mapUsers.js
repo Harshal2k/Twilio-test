@@ -18,8 +18,7 @@ module.exports.mapUsers = async (reqBody, models, twilio) => {
 
         let userDetails = await external_api("GET", `/userManagement/internal/v1/organisations/${reqBody.orgId}/users/${reqBody.userId}/details`, process.env.UM_HOST_URL, null, null, process.env.UM_API_KEY)
         if (!userDetails?.message?.user?.phone) {
-            await transaction.rollback();
-            throw new BadRequestError("User does not have a phone number assigned")
+            throw new BadRequestError("User does not have a phone number assigned");
         }
         await models.phone_mapping.destroy({
             where: {
