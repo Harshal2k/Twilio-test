@@ -39,6 +39,9 @@ module.exports.mapUsers = async (reqBody, models, twilio) => {
         return { twilioPhone: `+14344338771` };
     } catch (error) {
         await transaction.rollback();
+        if (error?.error?.message?.errorCode == 875626513) {
+            throw { message: "Something went wrong" }
+        }
         throw error;
     }
 };
