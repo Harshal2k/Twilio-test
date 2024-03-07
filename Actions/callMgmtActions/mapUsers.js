@@ -3,6 +3,7 @@ const {
     ResourceNotFoundError,
     NotAuthorizedError,
 } = require("../../errors");
+const { external_api } = require("../../externalApiCall");
 
 module.exports.mapUsers = async (reqBody, models, twilio) => {
     let transaction = await models.sequelize.transaction();
@@ -14,7 +15,12 @@ module.exports.mapUsers = async (reqBody, models, twilio) => {
         //         status: "inactive"
         //     }
         // });
-        let hostNumber = '+919359192032'//from external api call
+
+        let userDetails = await external_api("GET", `/userManagement/internal/v1/organisations/${reqBody.orgId}/users/${reqBody.userId}/details`, process.env.UM_HOST_URL, null, null, process.env.UM_API_KEY)
+        if (!userDetails?.message?.user?.phone) {
+            await transaction.rollback();
+            throw new BadRequestError("User does not have a phone number assigned")
+        }
         await models.phone_mapping.destroy({
             where: {
                 twilio_number: '+14344338771'
@@ -22,8 +28,9 @@ module.exports.mapUsers = async (reqBody, models, twilio) => {
         }, {
             transaction: transaction
         })
+
         await models.phone_mapping.create({
-            host: hostNumber,
+            host: userDetails?.message?.user?.phone,
             twilio_number: '+14344338771'
         }, {
             transaction: transaction

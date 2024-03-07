@@ -10,7 +10,7 @@
   },
   "development": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -38,7 +38,7 @@
   },
   "production2": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "dialectOptions": {
       "statement_timeout": 15000,
@@ -54,7 +54,7 @@
   },
   "production3": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "dialectOptions": {
       "statement_timeout": 15000,
@@ -70,7 +70,7 @@
   },
   "production4": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "dialectOptions": {
       "statement_timeout": 15000,
@@ -102,7 +102,7 @@
   },
   "productionDummy": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "dialectOptions": {
       "statement_timeout": 15000,
@@ -118,7 +118,7 @@
   },
   "test": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -130,7 +130,7 @@
   },
   "stage1": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -142,7 +142,7 @@
   },
   "development2": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -154,7 +154,7 @@
   },
   "htuat": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -166,7 +166,7 @@
   },
   "hmuat": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -178,7 +178,7 @@
   },
   "hmft": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
@@ -190,7 +190,7 @@
   },
   "test1": {
     "use_env_variable": "CALL_MGMT_DB_CONN_STRING",
-    "logging": true,
+    "logging": false,
     "dialect": "postgres",
     "timezone": "+05:30",
     "pool": {
