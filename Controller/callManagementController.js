@@ -66,6 +66,20 @@ class CallMgmtController extends BaseController {
         }
     }
 
+    async mapUsersV2() {
+        try {
+            let payload = await callMgmtActions.mapUsersV2(
+                this.reqBody,
+                this.models,
+                this.twilio
+            );
+
+            this.respondWithSuccess(payload);
+        } catch (err) {
+            this.respondWithError(err);
+        }
+    }
+
 }
 
 module.exports.CallMgmtController = {
@@ -80,5 +94,8 @@ module.exports.CallMgmtController = {
     },
     changeStatus: async (req, res) => {
         return new CallMgmtController(req, res).changeStatus();
+    },
+    mapUsersV2: async (req, res) => {
+        return new CallMgmtController(req, res).mapUsersV2();
     },
 };
