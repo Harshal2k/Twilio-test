@@ -12,7 +12,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
         let mappingExpiresMinutes = 30;
 
         let userDetails = await external_api("GET", `/userManagement/internal/v1/organisations/${reqBody.orgId}/users/${reqBody.userId}/details`, process.env.UM_HOST_URL, null, null, process.env.UM_API_KEY)
-       
+
         if (!userDetails?.message?.user?.phone) {
             throw new BadRequestError("User does not have a phone number assigned");
         }
@@ -44,7 +44,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
                 }
             );
             await transaction.commit();
-            return { twilioPhone1: isNumConnected?.twilio_number };
+            return { twilioPhone: isNumConnected?.twilio_number };
         } else if (twilioExists?.length > 0 && reqBody?.twilioNumber) {
             // SAME TWILIO NUMBER CONNECTED TO DIFFERENT HOST FOR SAME VISITOR
 
@@ -68,7 +68,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
                 transaction: transaction
             });
             await transaction.commit();
-            return { twilioPhone2: reqBody?.twilioNumber };
+            return { twilioPhone: reqBody?.twilioNumber };
         }
 
         await deleteExpiredMapping(models, transaction, mappingExpiresMinutes);
@@ -106,7 +106,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
         }
 
         await transaction.commit();
-        return { twilioPhone3: getTwilioNumber?.twilio_number };
+        return { twilioPhone: getTwilioNumber?.twilio_number };
     } catch (error) {
         await transaction.rollback();
         if (error?.error?.message?.errorCode == 875626513) {
