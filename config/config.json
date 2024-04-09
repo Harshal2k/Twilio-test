@@ -1,8 +1,8 @@
 {
   "local": {
-    "database":"call_management_dev1",
-    "username":"call_management_dev1_role",
-    "password":"Y2EyYWVmYzk2MjYy",
+    "database":"call_management_test1",
+    "username":"call_management_test1_role",
+    "password":"NmEzYmM0MTM1MGU4",
     "host": "localhost",
     "dialect": "postgres",
     "port":5435,

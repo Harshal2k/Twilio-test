@@ -9,7 +9,8 @@ const { external_api } = require("../../externalApiCall");
 module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
     let transaction = await models.sequelize.transaction();
     try {
-        let mappingExpiresMinutes = 30;
+        let mappingExpiresMinutes = 1;
+        let nullCallerUpdatedAtInterval = 1;
 
         let userDetails = await external_api("GET", `/userManagement/internal/v1/organisations/${reqBody.orgId}/users/${reqBody.userId}/details`, process.env.UM_HOST_URL, null, null, process.env.UM_API_KEY)
 
@@ -71,7 +72,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
             return { twilioPhone: reqBody?.twilioNumber };
         }
 
-        await deleteExpiredMapping(models, transaction, mappingExpiresMinutes);
+        await deleteExpiredMapping(models, transaction, mappingExpiresMinutes, nullCallerUpdatedAtInterval);
 
         let getTwilioNumber = await models.available_number.findOne({
             where: {
@@ -116,12 +117,12 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
     }
 };
 
-const deleteExpiredMapping = async (models, transaction, mappingExpiresMinutes) => {
+const deleteExpiredMapping = async (models, transaction, mappingExpiresMinutes, nullCallerUpdatedAtInterval) => {
     try {
         let [deletedMappings, _deletedMappings] = await models.sequelize.query(`
             DELETE FROM public.phone_mappings
             WHERE (caller IS NOT NULL AND NOW() - "updatedAt" > interval '${mappingExpiresMinutes} minutes')
-            OR (caller IS NULL AND NOW() - "updatedAt" > interval '2 minutes')
+            OR (caller IS NULL AND NOW() - "updatedAt" > interval '${nullCallerUpdatedAtInterval} minutes')
             RETURNING twilio_number;
         `, { transaction: transaction });
 

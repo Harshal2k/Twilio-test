@@ -9,7 +9,7 @@ const {
 module.exports.callForwardingV2 = async (reqBody, models, twilio) => {
     let transaction = await models.sequelize.transaction();
     try {
-        let mappingExpiresMinutes = 30;
+        let mappingExpiresMinutes = 1;
 
         let toDial = {};
 
