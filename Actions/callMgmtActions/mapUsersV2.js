@@ -49,7 +49,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
         } else if (twilioExists?.length > 0 && reqBody?.twilioNumber) {
             // SAME TWILIO NUMBER CONNECTED TO DIFFERENT HOST FOR SAME VISITOR
 
-            await deleteExpiredMapping(models, transaction, mappingExpiresMinutes);
+            await deleteExpiredMapping(models, transaction, mappingExpiresMinutes, nullCallerUpdatedAtInterval);
 
             await models.available_number.update({ status: 'active' },
                 {
