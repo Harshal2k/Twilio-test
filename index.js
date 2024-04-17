@@ -366,6 +366,18 @@ const { twilioRoutes } = require('./Routes/twilioRoutes');
 app.use(`${serviceName}`, callManagementRoutes);
 app.use(`${serviceName}/twilio`, twilioRoutes);
 
+app.get(`${serviceName}/sip`, (req, res) => {
+    res.type('text/xml');
+    res.send(`
+        <?xml version="1.0" encoding="UTF-8"?>
+    <Response>
+        <Dial>
+            <Number>+917722082259</Number>
+        </Dial>
+    </Response>
+    `)
+})
+
 app.get(`${serviceName}/health`, (req, res) => {
     res.send("I am ok bro 🥹")
 })
