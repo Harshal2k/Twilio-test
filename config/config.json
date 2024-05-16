@@ -1,11 +1,11 @@
 {
   "local": {
-    "database":"call_management_test1",
-    "username":"call_management_test1_role",
-    "password":"NmEzYmM0MTM1MGU4",
+    "database":"call_management_local",
+    "username":"postgres",
+    "password":"password",
     "host": "localhost",
     "dialect": "postgres",
-    "port":5435,
+    "port":5432,
     "timezone": "+05:30"
   },
   "development": {

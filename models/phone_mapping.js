@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true
         },
+        meeting_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
     }, { timestamps: true },)
     return phone_mapping
 }

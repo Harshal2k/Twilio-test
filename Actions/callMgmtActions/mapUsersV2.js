@@ -9,8 +9,12 @@ const { external_api } = require("../../externalApiCall");
 module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
     let transaction = await models.sequelize.transaction();
     try {
-        let mappingExpiresMinutes = 1;
-        let nullCallerUpdatedAtInterval = 1;
+        let mappingExpiresMinutes = 1;// In how much minutes the phone mapping will expire once we have the caller number
+        let nullCallerUpdatedAtInterval = 1;// In how much minutes the mapping will expire if the caller information is not present (happens when mapping is done but call is not initiated yet)
+
+        if (!reqBody?.meetingId) {
+            throw new BadRequestError("Meeting Id is required");
+        }
 
         let userDetails = await external_api("GET", `/userManagement/internal/v1/organisations/${reqBody.orgId}/users/${reqBody.userId}/details`, process.env.UM_HOST_URL, null, null, process.env.UM_API_KEY)
 
@@ -24,13 +28,13 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
         if (reqBody?.twilioNumber) {
             let [twilioMapping, _twilioMapping] = await models.sequelize.query(`
             SELECT * FROM public.phone_mappings
-            WHERE twilio_number = '${reqBody?.twilioNumber}' AND NOW() - "updatedAt" < interval '${mappingExpiresMinutes} minutes';
+            WHERE meeting_id = '${reqBody?.meetingId}' AND NOW() - "updatedAt" < interval '${mappingExpiresMinutes} minutes';
         `, { transaction: transaction });
             twilioExists = twilioMapping;
         }
 
-        let isNumConnected = twilioExists?.find(elem => elem?.host == hostNumber && reqBody?.twilioNumber == elem.twilio_number)
-        if (twilioExists?.length > 0 && reqBody?.twilioNumber && isNumConnected?.id) {
+        let isNumConnected = twilioExists?.find(elem => elem?.host == hostNumber && reqBody?.meetingId == elem.meeting_id)
+        if (twilioExists?.length > 0 && isNumConnected?.id) {
             //SAME VISITOR IS TRYING TO CONNECT TO SAME HOST AGAIN
 
             //UPDATE IS JUST TO UPDATE THE UPDATE_AT FIELD WITH LATEST TIME
@@ -64,7 +68,8 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
 
             await models.phone_mapping.create({
                 host: hostNumber,
-                twilio_number: reqBody.twilioNumber
+                twilio_number: reqBody.twilioNumber,
+                meeting_id: reqBody?.meetingId
             }, {
                 transaction: transaction
             });
@@ -83,7 +88,7 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
                 transaction: transaction
             }
         )
-        console.log({ getTwilioNumber });
+
         if (!getTwilioNumber) {
             throw new BadRequestError("Phone number currently unavailable");
         } else {
@@ -100,7 +105,8 @@ module.exports.mapUsersV2 = async (reqBody, models, twilio) => {
 
             await models.phone_mapping.create({
                 host: hostNumber,
-                twilio_number: getTwilioNumber.twilio_number
+                twilio_number: getTwilioNumber.twilio_number,
+                meeting_id: reqBody?.meetingId
             }, {
                 transaction: transaction
             })
